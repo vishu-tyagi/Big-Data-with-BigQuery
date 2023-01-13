@@ -21,3 +21,8 @@ build: build-base
 	docker build \
 		-t ${IMG}:${IMG_TAG} \
 		--build-arg IMAGE=${BASE_IMG}:${IMG_TAG} .
+
+fetch:
+	docker run -t \
+		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
+		${IMG}:${IMG_TAG} fetch
