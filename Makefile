@@ -12,5 +12,12 @@ export
 
 .PHONY: build-base
 build-base:
-	@docker build -t ${BASE_IMG}:${IMG_TAG} -f Dockerfile.base .
+	@docker build \
+		-t ${BASE_IMG}:${IMG_TAG} \
+		-f Dockerfile.base .
 
+.PHONY: build
+build: build-base
+	docker build \
+		-t ${IMG}:${IMG_TAG} \
+		--build-arg IMAGE=${BASE_IMG}:${IMG_TAG} .
