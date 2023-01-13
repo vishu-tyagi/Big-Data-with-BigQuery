@@ -1,4 +1,4 @@
-name: trip-duration
+name: nyc-taxi
 channels:
   - conda-forge
 dependencies:
