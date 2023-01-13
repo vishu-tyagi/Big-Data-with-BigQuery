@@ -14,6 +14,9 @@ case $1 in
     fetch)
     callable="fetch"
     ;;
+    ingest)
+    callable="ingest"
+    ;;
     *)
     echo "Invalid endpoint $1"
     exit 1

@@ -26,3 +26,8 @@ fetch:
 	docker run -t \
 		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
 		${IMG}:${IMG_TAG} fetch
+
+ingest:
+	docker run -t \
+		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
+		${IMG}:${IMG_TAG} ingest
