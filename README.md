@@ -26,6 +26,7 @@ Example usage
 ```
 make ingest user=root password=root host=127.0.0.1 port=5432 db=nyc_taxi table=raw
 ```
+will create (and replace, if it already exists) the table `raw` in the Postgres database `nyc_taxi` and upload raw data into it.
 
 ## Instructions for local development
 
