@@ -13,3 +13,14 @@ def fetch(config: NYCTaxiConfig = NYCTaxiConfig) -> None:
     data.make_dirs()
     data.fetch()
     return
+
+
+@timing
+def ingest(
+    connection_string: str,
+    table: str,
+    config: NYCTaxiConfig = NYCTaxiConfig
+) -> None:
+    data = DataClass(config)
+    data.ingest(connection_string=connection_string, table=table)
+    return

@@ -7,6 +7,34 @@
 cd Data-Engineering-Project
 ```
 
+#### Build the container
+```
+make build
+```
+
+#### Fetch raw data
+```
+make fetch
+```
+
+#### Ingest raw data into Postgres
+```
+make ingest network=pg_network user=pg_user password=pg_password host=pg_host port=pg_port db=pg_db table=pg_table
+```
+
+Example usage
+```
+make ingest network=host user=root password=root host=127.0.0.1 port=5432 db=nyc_taxi table=raw
+```
+will create (and replace, if it already exists) the table `raw` in the Postgres database `nyc_taxi` running on host network and upload raw data into it.
+
+## Instructions for local development
+
+#### Move into top-level directory
+```
+cd Data-Engineering-Project
+```
+
 #### Install environment
 ```
 conda env create -f environment.yml
@@ -28,6 +56,28 @@ Including the optional -e flag will install the package in "editable" mode, mean
 ```
 python -m nyc_taxi fetch
 ```
+#### Ingest raw data into Postgres
+```
+python -m nyc_taxi ingest \
+    --user=pguser \
+    --password=pgroot \
+    --host=pghost \
+    --port=pgport \
+    --db=pgdb \
+    --table=pgtable
+```
+
+Example usage
+```
+python -m nyc_taxi ingest \
+    --user=root \
+    --password=root \
+    --host=127.0.0.1 \
+    --port=5432 \
+    --db=nyc_taxi \
+    --table=raw
+```
+will create (and replace, if it already exists) the table `raw` in the Postgres database `nyc_taxi` running on host network and upload raw data into it.
 
 #### Run jupyter server
 ```
