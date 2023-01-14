@@ -7,6 +7,33 @@
 cd Data-Engineering-Project
 ```
 
+#### Build the container
+```
+make build
+```
+
+#### Fetch raw data
+```
+make fetch
+```
+
+#### Ingest raw data into Postgres
+```
+make ingest user=pguser password=pgpassword host=pghost port=pgport db=pgdb table=pgtable
+```
+
+Example usage
+```
+make ingest user=root password=root host=127.0.0.1 port=5432 db=nyc_taxi table=raw
+```
+
+## Instructions for local development
+
+#### Move into top-level directory
+```
+cd Data-Engineering-Project
+```
+
 #### Install environment
 ```
 conda env create -f environment.yml
@@ -27,6 +54,28 @@ Including the optional -e flag will install the package in "editable" mode, mean
 #### Fetch raw data
 ```
 python -m nyc_taxi fetch
+
+```
+#### Ingest raw data into Postgres
+```
+python -m nyc_taxi ingest \
+    --user=pguser \
+    --password=pgroot \
+    --host=pghost \
+    --port=pgport \
+    --db=pgdb \
+    --table=pgtable
+```
+
+Example usage
+```
+python -m nyc_taxi ingest \
+    --user=root \
+    --password=root \
+    --host=127.0.0.1 \
+    --port=5432 \
+    --db=nyc_taxi \
+    --table=raw
 ```
 
 #### Run jupyter server

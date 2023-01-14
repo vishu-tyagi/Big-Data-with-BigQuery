@@ -15,7 +15,7 @@ case $1 in
     callable="fetch"
     ;;
     ingest)
-    callable="ingest"
+    callable=$@
     ;;
     *)
     echo "Invalid endpoint $1"
