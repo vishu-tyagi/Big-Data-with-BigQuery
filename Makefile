@@ -12,6 +12,7 @@ export
 
 .PHONY: check-connection
 check-connection:
+	@[ "${network}" ] || ( echo ">> network is not set"; exit 1 )
 	@[ "${user}" ] || ( echo ">> user is not set"; exit 1 )
 	@[ "${password}" ] || ( echo ">> password is not set"; exit 1 )
 	@[ "${host}" ] || ( echo ">> host is not set"; exit 1 )
@@ -38,7 +39,7 @@ fetch:
 
 ingest: check-connection
 	docker run -t \
-		--network=host \
+		--network=$(network) \
 		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
 		nyc-taxi:latest ingest \
 		--user=$(user) \
