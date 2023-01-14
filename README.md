@@ -55,7 +55,6 @@ Including the optional -e flag will install the package in "editable" mode, mean
 #### Fetch raw data
 ```
 python -m nyc_taxi fetch
-
 ```
 #### Ingest raw data into Postgres
 ```
@@ -78,6 +77,7 @@ python -m nyc_taxi ingest \
     --db=nyc_taxi \
     --table=raw
 ```
+will create (and replace, if it already exists) the table raw in the Postgres database nyc_taxi and upload raw data into it.
 
 #### Run jupyter server
 ```
