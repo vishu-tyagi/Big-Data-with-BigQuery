@@ -14,3 +14,4 @@ dependencies:
   # Pip
   - pip==22.3.1
   - pip:
+    - dbt-postgres
