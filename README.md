@@ -34,7 +34,7 @@ make extract-load-postgres \
     host=127.0.0.1 \
     port=5432 \
     db=nyc_taxi \
-    schema=docker_test
+    schema=staging
 
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on `host` network on port `5432` and ingest the tables into it.
@@ -42,7 +42,8 @@ will extract raw data and, create (if it does not exist) the schema `staging` in
 #### Extract raw data and ingest into BigQuery
 ```
 make extract-load-postgres \
-    bucket=bq_bucket
+    bucket=bq_bucket \
+    schema=bq_schema
 
 ```
 
