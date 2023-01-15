@@ -43,7 +43,8 @@ class PostgresPipeline(DataPipeline):
                 schema=schema,
                 table=dataset,
                 if_table_exists=if_table_exists,
-                chunksize=10000
+                chunksize=10000,
+                file_name=fname
             )
             if_table_exists = "append"
             nrows += df.shape[0]
@@ -88,6 +89,8 @@ class BigQueryPipeline(DataPipeline):
         nrows = 0
         for fname in self.data_url[dataset]:
             df = pd.read_parquet(f"gs://{bucket.name}/{dataset}/{fname}")
+            columns = [c for c in df.columns if c not in self.config.EXCLUDE_COLUMNS]
+            df = df[columns].copy()
             df.columns = [c.lower() for c in df.columns]
             upload_to_bigquery(
                 df=df,
@@ -95,7 +98,8 @@ class BigQueryPipeline(DataPipeline):
                 schema=schema,
                 table=dataset,
                 if_table_exists=if_table_exists,
-                chunksize=10000
+                chunksize=10000,
+                file_name=fname
             )
             if_table_exists = "append"
             nrows += df.shape[0]

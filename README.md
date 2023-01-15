@@ -41,7 +41,7 @@ will extract raw data and, create (if it does not exist) the schema `staging` in
 
 #### Extract raw data and ingest into BigQuery
 ```
-make extract-load-postgres \
+make extract-load-bigquery \
     bucket=bq_bucket \
     schema=bq_schema
 
@@ -49,7 +49,7 @@ make extract-load-postgres \
 
 Example usage
 ```
-make extract-load-postgres \
+make extract-load-bigquery \
     bucket=nyc_taxi_bucket \
     schema=staging
 

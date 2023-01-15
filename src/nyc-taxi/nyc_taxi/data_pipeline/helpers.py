@@ -36,9 +36,10 @@ def upload_to_postgres(
     schema: str,
     table: str,
     if_table_exists: str,
-    chunksize: int
+    chunksize: int,
+    file_name: str
 ):
-    logger.info(f"Uploading {df.shape[0]} rows ...")
+    logger.info(f"Uploading {file_name} with {df.shape[0]} rows ...")
     df.to_sql(
         name=table,
         con=engine,
@@ -70,9 +71,10 @@ def upload_to_bigquery(
     schema: str,
     table: str,
     if_table_exists: str,
-    chunksize: int
+    chunksize: int,
+    file_name: str
 ):
-    logger.info(f"Uploading {df.shape[0]} rows ...")
+    logger.info(f"Uploading {file_name} with {df.shape[0]} rows ...")
     df.to_gbq(
         project_id=project_id,
         destination_table=f"{schema}.{table}",
