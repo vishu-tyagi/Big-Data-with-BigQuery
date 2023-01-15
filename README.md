@@ -14,7 +14,7 @@ make build
 
 #### Extract raw data and ingest into Postgres
 ```
-make ingest \
+make extract-load-postgres \
     network=pg_network \
     user=pg_user \
     password=pg_password \
@@ -27,7 +27,7 @@ make ingest \
 
 Example usage
 ```
-make extract-load \
+make extract-load-postgres \
     network=host \
     user=root \
     password=root \
@@ -38,6 +38,22 @@ make extract-load \
 
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on `host` network on port `5432` and ingest the tables into it.
+
+#### Extract raw data and ingest into BigQuery
+```
+make extract-load-postgres \
+    bucket=bq_bucket
+
+```
+
+Example usage
+```
+make extract-load-postgres \
+    bucket=nyc_taxi_bucket \
+    schema=staging
+
+```
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
 
 ## Instructions for local development
 
@@ -69,7 +85,7 @@ Including the optional -e flag will install the package in "editable" mode, mean
 
 #### Extract raw data and ingest into Postgres
 ```
-python -m nyc_taxi extract-load \
+python -m nyc_taxi extract-load-postgres \
     --user=pg_user \
     --password=pg_password \
     --host=pg_host \
@@ -81,7 +97,7 @@ python -m nyc_taxi extract-load \
 
 Example usage
 ```
-python -m nyc_taxi extract-load \
+python -m nyc_taxi extract-load-postgres \
     --user=root \
     --password=root \
     --host=127.0.0.1 \
@@ -91,6 +107,22 @@ python -m nyc_taxi extract-load \
 
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on host network on port `5432` and ingest the tables into it.
+
+#### Extract raw data and ingest into BigQuery
+```
+python -m nyc_taxi extract-load-bigquery \
+    --bucket=bq_bucket
+
+```
+
+Example usage
+```
+python -m nyc_taxi extract-load-bigquery \
+    --bucket=nyc_taxi_bucket \
+    --schema=staging
+
+```
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
 
 #### Run jupyter server
 ```

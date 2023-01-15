@@ -4,7 +4,7 @@ class NYCTaxiConfig():
         "green_tripdata": {
             f"green_tripdata_{year}-{i:02}.parquet": \
             f"https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{i:02}.parquet" \
-            for i in range(1, 13) \
+            for i in range(1, 3) \
             for year in [2021]
         },
         "yellow_tripdata": {

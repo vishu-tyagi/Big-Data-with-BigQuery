@@ -11,8 +11,11 @@ if ${DEBUG}; then
 fi
 
 case $1 in
-    extract-load)
-    callable="extract-load"
+    extract-load-postgres)
+    callable="extract-load-postgres"
+    ;;
+    extract-load-bigquery)
+    callable="extract-load-bigquery"
     ;;
     *)
     echo "Invalid endpoint $1"
