@@ -39,7 +39,7 @@ def upload_to_postgres(
     chunksize: int,
     file_name: str
 ):
-    logger.info(f"Uploading {file_name} with {df.shape[0]} rows ...")
+    logger.info(f"Ingesting {file_name} with {df.shape[0]} rows ...")
     df.to_sql(
         name=table,
         con=engine,
@@ -74,7 +74,7 @@ def upload_to_bigquery(
     chunksize: int,
     file_name: str
 ):
-    logger.info(f"Uploading {file_name} with {df.shape[0]} rows ...")
+    logger.info(f"Ingesting {file_name} with {df.shape[0]} rows ...")
     df.to_gbq(
         project_id=project_id,
         destination_table=f"{schema}.{table}",
