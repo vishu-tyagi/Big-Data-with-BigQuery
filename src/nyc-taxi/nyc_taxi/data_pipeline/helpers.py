@@ -30,15 +30,17 @@ def download_data(url: str, save_to: Path) -> None:
 def upload_data(
     df: pd.DataFrame,
     connection,
-    name: str,
-    if_exists: str,
-    chunksize: int
+    table: str,
+    if_table_exists: str,
+    chunksize: int,
+    schema: str
 ):
     logger.info(f"Uploading {df.shape[0]} rows ...")
     df.to_sql(
-        name=name,
+        name=table,
         con=connection,
-        if_exists=if_exists,
+        if_exists=if_table_exists,
         index=False,
-        chunksize=chunksize
+        chunksize=chunksize,
+        schema=schema
     )

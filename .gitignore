@@ -5,6 +5,8 @@
 **/*.pyc
 **/*.ipynb_checkpoints
 data/
+logs/
+src/dbt/logs
 src/dbt/target/
 src/dbt/dbt_modules/
 src/dbt/dbt_packages/

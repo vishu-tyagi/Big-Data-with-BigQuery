@@ -1,9 +1,18 @@
 class NYCTaxiConfig():
     # URLs for downloading data
     DATA_URL = {
-        f"green_tripdata_2021-{i:02}.parquet": \
-        f"https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2021-{i:02}.parquet" \
-        for i in range(1, 13)
+        "green_tripdata": {
+            f"green_tripdata_{year}-{i:02}.parquet": \
+            f"https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{i:02}.parquet" \
+            for i in range(1, 13) \
+            for year in [2021]
+        },
+        "yellow_tripdata": {
+            f"yellow_tripdata_{year}-{i:02}.parquet": \
+            f"https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year}-{i:02}.parquet" \
+            for i in range(1, 2) \
+            for year in [2021]
+        }
     }
 
     CURRENT_PATH = None

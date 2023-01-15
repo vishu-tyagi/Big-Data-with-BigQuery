@@ -18,7 +18,7 @@ check-connection:
 	@[ "${host}" ] || ( echo ">> host is not set"; exit 1 )
 	@[ "${port}" ] || ( echo ">> port is not set"; exit 1 )
 	@[ "${db}" ] || ( echo ">> db is not set"; exit 1 )
-	@[ "${table}" ] || ( echo ">> table is not set"; exit 1 )
+	@[ "${schema}" ] || ( echo ">> schema is not set"; exit 1 )
 
 .PHONY: build-base
 build-base:
@@ -32,19 +32,14 @@ build: build-base
 		-t ${IMG}:${IMG_TAG} \
 		--build-arg IMAGE=${BASE_IMG}:${IMG_TAG} .
 
-fetch:
-	docker run -t \
-		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
-		${IMG}:${IMG_TAG} fetch
-
-ingest: check-connection
+extract-load: check-connection
 	docker run -t \
 		--network=$(network) \
 		-v ${LOCAL_DATA_DIR}:${DOCKER_DATA_DIR} \
-		nyc-taxi:latest ingest \
+		nyc-taxi:latest extract-load \
 		--user=$(user) \
 		--password=$(password) \
 		--host=$(host) \
 		--port=$(port) \
 		--db=$(db) \
-		--table=$(table)
+		--schema=$(schema)

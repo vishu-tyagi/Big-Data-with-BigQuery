@@ -3,10 +3,9 @@ from pathlib import Path
 import logging
 
 import pandas as pd
-from sqlalchemy import create_engine
 
 from nyc_taxi.config import NYCTaxiConfig
-from nyc_taxi.data_access.helpers import download_data, upload_data
+from nyc_taxi.data_pipeline.helpers import download_data, upload_data
 from nyc_taxi.utils import timing
 from nyc_taxi.utils.constants import (
     DATA_DIR
@@ -15,7 +14,7 @@ from nyc_taxi.utils.constants import (
 logger = logging.getLogger(__name__)
 
 
-class DataClass():
+class DataPipeline():
     def __init__(self, config: NYCTaxiConfig = NYCTaxiConfig):
         self.config = config
         self.data_url = config.DATA_URL
@@ -28,28 +27,39 @@ class DataClass():
             dir.mkdir(parents=True, exist_ok=True)
         logger.info(f"Created data directory {self.data_path}")
 
-    def fetch(self):
-        logger.info(f"Fetching raw data ...")
-        for fname in self.data_url:
+    @timing
+    def extract(self, dataset: str):
+        logger.info(f"Fetching raw data for {dataset}...")
+        for fname in self.data_url[dataset]:
             save_to = Path(os.path.join(self.data_path, fname))
-            download_data(url=self.data_url[fname], save_to=save_to)
+            download_data(url=self.data_url[dataset][fname], save_to=save_to)
             logger.info(f"Downloaded {fname} to {self.data_path}")
 
-    def ingest(self, connection_string: str, table: str):
-        logger.info(f"Ingesting data into table {table} on {connection_string} ...")
-        engine = create_engine(connection_string)
-        if_exists = "replace"
+    @timing
+    def load(
+        self,
+        dataset: str,
+        connection_string: str,
+        engine,
+        table: str,
+        schema: str
+    ):
+        logger.info(
+            f"Ingesting {dataset} into table {schema}.{table} on {connection_string} ..."
+        )
+        if_table_exists = "replace"
         nrows = 0
-        for fname in self.data_url:
+        for fname in self.data_url[dataset]:
             df = pd.read_parquet(os.path.join(self.data_path, fname))
             df.columns = [c.lower() for c in df.columns]
             upload_data(
                 df=df,
                 connection=engine,
-                name=table,
-                if_exists=if_exists,
-                chunksize=10000
+                table=table,
+                if_table_exists=if_table_exists,
+                chunksize=10000,
+                schema=schema
             )
-            if_exists = "append"
+            if_table_exists = "append"
             nrows += df.shape[0]
         logger.info(f"Completed ingesting {nrows} rows")

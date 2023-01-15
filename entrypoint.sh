@@ -11,11 +11,8 @@ if ${DEBUG}; then
 fi
 
 case $1 in
-    fetch)
-    callable="fetch"
-    ;;
-    ingest)
-    callable=$@
+    extract-load)
+    callable="extract-load"
     ;;
     *)
     echo "Invalid endpoint $1"
@@ -23,6 +20,6 @@ case $1 in
     ;;
 esac
 
-CMD="python3 -m nyc_taxi $callable"
+CMD="python3 -m nyc_taxi $callable ${@:2}"
 
 exec $CMD
