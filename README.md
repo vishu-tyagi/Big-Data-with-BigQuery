@@ -116,6 +116,8 @@ python -m nyc_taxi extract-load-bigquery \
 
 ```
 
+Requires environment variable `GOOGLE_APPLICATION_CREDENTIALS`.
+
 Example usage
 ```
 python -m nyc_taxi extract-load-bigquery \
