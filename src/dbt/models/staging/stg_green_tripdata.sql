@@ -29,7 +29,6 @@ with type_casted as (
         , cast(tip_amount as numeric) tip_amount
         , cast(tolls_amount as numeric) toll_fee
         , cast(improvement_surcharge as numeric) improvement_surcharge
-        , cast(congestion_surcharge as numeric) congestion_surcharge
         , cast(total_amount as numeric) total_amount
         , cast(payment_type as integer) payment_type
     from {{ source('staging', 'green_tripdata') }}
@@ -56,7 +55,8 @@ with type_casted as (
         and (tip_amount is null or tip_amount >= 0)
         and (toll_fee is null or toll_fee >= 0)
         and (improvement_surcharge is null or improvement_surcharge >= 0)
-        and (congestion_surcharge is null or congestion_surcharge >= 0)
+        and (total_amount is null or total_amount > 0)
+        and (payment_type is null or payment_type in (1, 2, 3, 4, 5, 6))
 
         -- remove outliers
         and passenger_count
