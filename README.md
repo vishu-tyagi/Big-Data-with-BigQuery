@@ -10,24 +10,21 @@ cd Data-Engineering-Project
 #### Build the container
 ```
 make build
+
 ```
 
 #### Extract raw data and ingest into BigQuery
 ```
-make extract-load-bigquery \
-    bucket=bq_bucket \
-    schema=bq_schema
+make extract-load-bigquery bucket=bq_bucket schema=bq_dataset
 
 ```
 
 Example usage
 ```
-make extract-load-bigquery \
-    bucket=nyc_taxi_bucket \
-    schema=staging
+make extract-load-bigquery bucket=nyc_taxi_bucket schema=staging
 
 ```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest it into BigQuery dataset `staging`.
 
 #### Extract raw data and ingest into Postgres
 
@@ -90,7 +87,8 @@ Including the optional -e flag will install the package in "editable" mode, mean
 #### Extract raw data and ingest into BigQuery
 ```
 python -m nyc_taxi extract-load-bigquery \
-    --bucket=bq_bucket
+    --bucket=bq_bucket \
+    --schema=bq_dataset
 
 ```
 
@@ -103,7 +101,7 @@ python -m nyc_taxi extract-load-bigquery \
     --schema=staging
 
 ```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest it into BigQuery dataset `staging`.
 
 #### Extract raw data and ingest into Postgres
 ```
