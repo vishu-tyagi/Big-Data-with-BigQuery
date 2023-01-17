@@ -25,11 +25,6 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 
-quoting:
-  database: false
-  schema: false
-  identifier: false
-
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
@@ -39,5 +34,15 @@ quoting:
 models:
   nyc_taxi_dbt:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+
+seeds:
+    taxi_rides_ny:
+        taxi_zone_lookup:
+            +column_types:
+                locationid: numeric
+
+vars:
+  vendorid_values: [1, 2]
+  payment_type_values: [1, 2, 3, 4, 5, 6]
+  ratecodeid_values: [1, 2, 3, 4, 5, 6]
+
