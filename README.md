@@ -12,7 +12,27 @@ cd Data-Engineering-Project
 make build
 ```
 
+#### Extract raw data and ingest into BigQuery
+```
+make extract-load-bigquery \
+    bucket=bq_bucket \
+    schema=bq_schema
+
+```
+
+Example usage
+```
+make extract-load-bigquery \
+    bucket=nyc_taxi_bucket \
+    schema=staging
+
+```
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
+
 #### Extract raw data and ingest into Postgres
+
+Note: This will take very long. It's recommended to reduce files in `src/nyc-taxi/nyc_taxi/config.py` before ingesting into a postgres database.
+
 ```
 make extract-load-postgres \
     network=pg_network \
@@ -38,23 +58,6 @@ make extract-load-postgres \
 
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on `host` network on port `5432` and ingest the tables into it.
-
-#### Extract raw data and ingest into BigQuery
-```
-make extract-load-bigquery \
-    bucket=bq_bucket \
-    schema=bq_schema
-
-```
-
-Example usage
-```
-make extract-load-bigquery \
-    bucket=nyc_taxi_bucket \
-    schema=staging
-
-```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
 
 ## Instructions for local development
 
@@ -84,6 +87,24 @@ pip install -e src/nyc-taxi
 
 Including the optional -e flag will install the package in "editable" mode, meaning that instead of copying the files into your virtual environment, a symlink will be created to the files where they are.
 
+#### Extract raw data and ingest into BigQuery
+```
+python -m nyc_taxi extract-load-bigquery \
+    --bucket=bq_bucket
+
+```
+
+Requires environment variable `GOOGLE_APPLICATION_CREDENTIALS`.
+
+Example usage
+```
+python -m nyc_taxi extract-load-bigquery \
+    --bucket=nyc_taxi_bucket \
+    --schema=staging
+
+```
+will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
+
 #### Extract raw data and ingest into Postgres
 ```
 python -m nyc_taxi extract-load-postgres \
@@ -108,24 +129,6 @@ python -m nyc_taxi extract-load-postgres \
 
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on host network on port `5432` and ingest the tables into it.
-
-#### Extract raw data and ingest into BigQuery
-```
-python -m nyc_taxi extract-load-bigquery \
-    --bucket=bq_bucket
-
-```
-
-Requires environment variable `GOOGLE_APPLICATION_CREDENTIALS`.
-
-Example usage
-```
-python -m nyc_taxi extract-load-bigquery \
-    --bucket=nyc_taxi_bucket \
-    --schema=staging
-
-```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest the table into BigQuery schema `staging`.
 
 #### Run jupyter server
 ```
