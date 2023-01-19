@@ -59,7 +59,7 @@ will extract raw data and, create (if it does not exist) the schema `staging` in
 
 ## Dashboard
 
-The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries are present in `Big-Data-with-BigQuery/src/dbt/models`
+The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The cleaning steps and SQL queries are present in `Big-Data-with-BigQuery/src/dbt/models`
 
 ## Instructions for local development
 
