@@ -22,35 +22,24 @@ with green_trips as (
     from yellow_trips
 )
 
+-- Reduce data size by grouping for Tableau visualization
 select
     trips.vendorid
     , trips.service_type
-    , trips.ratecodeid
-    , trips.pickup_locationid
     , pickup.borough as pickup_borough
     , pickup.zone as pickup_zone
-    , trips.dropoff_locationid
     , dropoff.borough as dropoff_borough
-    , dropoff.zone as dropoff_zone
-    , trips.pickup_datetime
-    , trips.dropoff_datetime
-    , trips.Store_and_fwd_flag
-    , trips.passenger_count
-    , trips.trip_distance
-    , trips.fare_amount
-    , trips.extra_amount
-    , trips.mta_tax
-    , trips.tip_amount
-    , trips.toll_fee
-    , trips.improvement_surcharge
-    , trips.total_amount
-    , trips.payment_type
+    , timestamp_trunc(pickup_datetime, hour) pickup_datetime
+    , sum(trips.trip_distance) trip_distance
+    , sum(trips.fare_amount) fare_amount
+    , count(*) number_of_rides
 from
     trips_unioned trips
     inner join {{ ref('dim_taxi_zone_lookup') }} pickup
     on trips.pickup_locationid = pickup.locationid
     inner join {{ ref('dim_taxi_zone_lookup') }} dropoff
     on trips.dropoff_locationid = dropoff.locationid
+group by 1, 2, 3, 4, 5, 6
 
 -- dbt build --m <model.sql> --var 'is_test_run: false'
 {% if var('is_test_run', default=true) %}
