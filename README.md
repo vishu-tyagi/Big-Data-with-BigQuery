@@ -4,7 +4,7 @@
 
 #### Move into top-level directory
 ```
-cd Data-Engineering-Project
+cd Big-Data-with-BigQuery
 
 ```
 
@@ -57,11 +57,16 @@ make extract-load-postgres \
 ```
 will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on `host` network on port `5432` and ingest the tables into it.
 
+
+## Dashboard
+
+The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries are present in `Big-Data-with-BigQuery/src/dbt/models`
+
 ## Instructions for local development
 
 #### Move into top-level directory
 ```
-cd Data-Engineering-Project
+cd Big-Data-with-BigQuery
 
 ```
 
