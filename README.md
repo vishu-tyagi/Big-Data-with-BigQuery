@@ -8,13 +8,13 @@
 
 - Google Cloud Platform Account
     - You have a GCP project with the project ID <your-gcp-project-id>
-    - You have environment variable `GOOGLE_APPLICATION_CREDENTIALS` set, which points to your Google Service Account JSON file. The service account should have **Storage Admin**, **Storage Object Admin**, and **BigQuery Admin permissions**.
+    - You have environment variable `GOOGLE_APPLICATION_CREDENTIALS` set, which points to your Google Service Account JSON file. The service account should have **Storage Admin**, **Storage Object Admin**, and **BigQuery Admin** permissions.
     - `gcloud` sdk installed. To authenticate, run
         ```
         gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 
         ```
-    - Terraform
+- Terraform
 
 ### Terraform
 
