@@ -51,11 +51,14 @@ Terraform plan should show the plan for creating following services:
 #### Apply the infrastructure
 ```
 terraform apply
+
 ```
 
-You should now see the above bucket and BigQuery datasets in your GCS project.
+You should now see the above bucket and datasets in your GCS project.
 
-Once done, set the environment variables `GCP_PROJECT_ID` and `GCP_GCS_BUCKET` to your Project ID `<your-gcp-project-id>` and `<your-gcs-bucket-name>` respectively.
+Once done, set the environment variables `GCP_PROJECT_ID`, `GCP_GCS_BUCKET` to `<your-gcp-project-id>`, `<your-gcs-bucket-name>` respectively.
+
+### Get Going
 
 #### Move into top-level directory
 ```
