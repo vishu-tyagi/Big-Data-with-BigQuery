@@ -34,7 +34,7 @@ terraform init
 
 #### View the Terraform plan
 
-You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate desired name with your GCS Project ID to make it unique.
+You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate desired name with your GCS Project ID to make it unique. We will refer to the entered bucket name as `<your-gcs-bucket-name>`.
 
 
 ```
@@ -53,7 +53,9 @@ Terraform plan should show the plan for creating following services:
 terraform apply
 ```
 
-You should now see a bucket and two BigQuery datasets in your GCS project.
+You should now see the above bucket and BigQuery datasets in your GCS project.
+
+Once done, set the environment variables `GCP_PROJECT_ID` and `GCP_GCS_BUCKET` to your Project ID `<your-gcp-project-id>` and `<your-gcs-bucket-name>` respectively.
 
 #### Move into top-level directory
 ```
