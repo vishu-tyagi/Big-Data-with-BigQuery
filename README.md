@@ -7,7 +7,7 @@
 ### Pre-requisites
 
 - Google Cloud Platform Account
-    - You have a GCP project with the project ID <your-gcp-project-id>
+    - You have a GCP project with the project ID `<your-gcp-project-id>`
     - You have environment variable `GOOGLE_APPLICATION_CREDENTIALS` set, which points to your Google Service Account JSON file. The service account should have **Storage Admin**, **Storage Object Admin**, and **BigQuery Admin** permissions.
     - `gcloud` sdk installed. To authenticate, run
         ```
@@ -18,7 +18,7 @@
 
 ### Terraform
 
-The following steps will help spin up the required infrastructure, which include one GCS bucket and two BigQuery datasets
+The following steps will help you spin up the required infrastructure, which includes one GCS bucket and two BigQuery datasets
 
 #### Move into terraform folder
 ```
@@ -34,7 +34,7 @@ terraform init
 
 #### View the Terraform plan
 
-You will be asked to enter two values. For the GCP Project ID, enter <your-gcp-project-id>. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate your the name with your GCS Project ID to make it unique.
+You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate your the name with your GCS Project ID to make it unique.
 
 
 ```
