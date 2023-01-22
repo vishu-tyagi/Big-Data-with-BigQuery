@@ -44,9 +44,9 @@ terraform plan
 
 Terraform plan should show the plan for creating following services:
 
-1. `google_storage_bucket.bucket` - This is the data lake bucket, used to store parquet files in monthly batches
+1. `google_storage_bucket.bucket` - This is the data lake bucket, used to store raw parquet files in monthly batches
 2. `google_bigquery_dataset.stg_dataset` - This is the staging dataset for raw data
-3. `google_bigquery_dataset.prod_dataset` - This is be the prod dataset for a wide table that's used for BI reporting
+3. `google_bigquery_dataset.prod_dataset` - This is the prod dataset for BI reporting
 
 #### Apply the infrastructure
 ```
