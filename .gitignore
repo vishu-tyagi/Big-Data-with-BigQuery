@@ -5,7 +5,12 @@
 **/__pycache__
 **/*.pyc
 **/*.ipynb_checkpoints
+**/*.tfstate
+**/*.lock.hcl
+**/*.terraform
+**/*.backup
 data/
+
 logs/
 src/dbt/logs
 src/dbt/target/
