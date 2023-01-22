@@ -34,7 +34,7 @@ terraform init
 
 #### View the Terraform plan
 
-You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate your the name with your GCS Project ID to make it unique.
+You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate desired name with your GCS Project ID to make it unique.
 
 
 ```
