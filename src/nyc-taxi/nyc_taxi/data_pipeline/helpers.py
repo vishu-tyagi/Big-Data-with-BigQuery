@@ -12,16 +12,6 @@ from nyc_taxi.utils import timing
 logger = logging.getLogger(__name__)
 
 
-def download_data(url: str, save_to: Path) -> None:
-    logger.info(f"Downloading {url}")
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(str(save_to), 'wb') as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-    return
-
-
 @timing
 def upload_to_postgres(
     df: pd.DataFrame,
@@ -41,19 +31,6 @@ def upload_to_postgres(
         chunksize=chunksize,
         schema=schema
     )
-    return
-
-
-@timing
-def upload_to_gcs_bucket(
-    df: pd.DataFrame,
-    bucket: Bucket,
-    file_path_in_bucket: str,
-    file_type: str
-):
-    logger.info(f"Uploading {file_path_in_bucket}")
-    bucket.blob(file_path_in_bucket) \
-        .upload_from_string(df.to_parquet(index=False), file_type)
     return
 
 

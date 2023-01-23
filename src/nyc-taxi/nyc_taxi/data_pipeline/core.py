@@ -3,14 +3,11 @@ from pathlib import Path
 import logging
 
 import pandas as pd
-from sqlalchemy.engine.base import Engine
 from google.cloud.storage.bucket import Bucket
 
 from nyc_taxi.config import NYCTaxiConfig
 from nyc_taxi.data_pipeline.base_pipeline import DataPipeline
 from nyc_taxi.data_pipeline.helpers import (
-    upload_to_postgres,
-    upload_to_gcs_bucket,
     upload_to_bigquery
 )
 from nyc_taxi.utils import timing
@@ -18,72 +15,23 @@ from nyc_taxi.utils import timing
 logger = logging.getLogger(__name__)
 
 
-class PostgresPipeline(DataPipeline):
-    def __init__(self, config: NYCTaxiConfig = NYCTaxiConfig):
-        super(PostgresPipeline, self).__init__(config)
-
-    @timing
-    def load(
-        self,
-        dataset: str,
-        engine: Engine,
-        schema: str
-    ):
-        logger.info(
-            f"Ingesting {dataset} into table {schema}.{dataset} on {engine.url} ..."
-        )
-        if_table_exists = "replace"
-        nrows = 0
-        for fname in self.data_url[dataset]:
-            df = pd.read_parquet(os.path.join(self.data_path, fname))
-            df.columns = [c.lower() for c in df.columns]
-            upload_to_postgres(
-                df=df,
-                engine=engine,
-                schema=schema,
-                table=dataset,
-                if_table_exists=if_table_exists,
-                chunksize=10000,
-                file_name=fname
-            )
-            if_table_exists = "append"
-            nrows += df.shape[0]
-        logger.info(f"Completed ingesting {nrows} rows")
-
-
 class BigQueryPipeline(DataPipeline):
     def __init__(self, config: NYCTaxiConfig = NYCTaxiConfig):
         super(BigQueryPipeline, self).__init__(config)
-        self.gcp_project_id = os.getenv("GCP_PROJECT_ID")
-        self.gcs_bucket = os.getenv("GCP_GCS_BUCKET")
 
     @timing
-    def upload_to_gcs(self, dataset: str):
-        logger.info(
-            f"Saving {dataset} to gs://{self.gcs_bucket}/{dataset} ..."
-        )
-        # df = pd.read_parquet(os.path.join(self.data_path, dataset))
-        # logger.info(f"Number of rows read: {df.shape[0]}")
-        return
-
-    # @timing
-    # def upload_to_gcs(
-    #     self,
-    #     dataset: str,
-    #     bucket: Bucket
-    # ):
-    #     logger.info(
-    #         f"Saving {dataset} to gs://{bucket.name}/{dataset} ..."
-    #     )
-    #     for fname in self.data_url[dataset]:
-    #         df = pd.read_parquet(os.path.join(self.data_path, fname))
-    #         file_path_in_bucket = os.path.join(dataset, fname)
-    #         upload_to_gcs_bucket(
-    #             df=df,
-    #             bucket=bucket,
-    #             file_path_in_bucket=file_path_in_bucket,
-    #             file_type="parquet"
-    #         )
+    def upload_to_gcs(self, dataset: str, bucket: Bucket):
+        df = pd.read_parquet(os.path.join(self.data_path, dataset))
+        logger.info(f"Read {df.shape[0]} rows ...")
+        logger.info(f"Uploading {dataset} to gs://{bucket.name}/{dataset} ...")
+        columns = [c for c in df.columns if c not in self.config.EXCLUDE_COLUMNS]
+        df = df[columns].copy()
+        df.columns = [c.lower() for c in df.columns]
+        bucket \
+            .blob(dataset) \
+            .upload_from_string(df.to_parquet(index=False), "parquet")
+        logger.info(f"Finished uploading {dataset}")
+        return dataset
 
     @timing
     def upload(
