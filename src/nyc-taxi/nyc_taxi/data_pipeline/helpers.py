@@ -12,14 +12,7 @@ from nyc_taxi.utils import timing
 logger = logging.getLogger(__name__)
 
 
-@timing
 def download_data(url: str, save_to: Path) -> None:
-    """
-    Download data from URL
-    Args:
-        data_url (_type_): URL to download from
-        to_ (Path): Destination for downloaded data
-    """
     logger.info(f"Downloading {url}")
     with requests.get(url, stream=True) as r:
         r.raise_for_status()

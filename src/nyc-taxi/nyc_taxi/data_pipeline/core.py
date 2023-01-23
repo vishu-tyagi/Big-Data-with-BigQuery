@@ -54,25 +54,36 @@ class PostgresPipeline(DataPipeline):
 class BigQueryPipeline(DataPipeline):
     def __init__(self, config: NYCTaxiConfig = NYCTaxiConfig):
         super(BigQueryPipeline, self).__init__(config)
+        self.gcp_project_id = os.getenv("GCP_PROJECT_ID")
+        self.gcs_bucket = os.getenv("GCP_GCS_BUCKET")
 
     @timing
-    def upload_to_datalake(
-        self,
-        dataset: str,
-        bucket: Bucket
-    ):
+    def upload_to_gcs(self, dataset: str):
         logger.info(
-            f"Saving {dataset} to gs://{bucket.name}/{dataset} ..."
+            f"Saving {dataset} to gs://{self.gcs_bucket}/{dataset} ..."
         )
-        for fname in self.data_url[dataset]:
-            df = pd.read_parquet(os.path.join(self.data_path, fname))
-            file_path_in_bucket = os.path.join(dataset, fname)
-            upload_to_gcs_bucket(
-                df=df,
-                bucket=bucket,
-                file_path_in_bucket=file_path_in_bucket,
-                file_type="parquet"
-            )
+        # df = pd.read_parquet(os.path.join(self.data_path, dataset))
+        # logger.info(f"Number of rows read: {df.shape[0]}")
+        return
+
+    # @timing
+    # def upload_to_gcs(
+    #     self,
+    #     dataset: str,
+    #     bucket: Bucket
+    # ):
+    #     logger.info(
+    #         f"Saving {dataset} to gs://{bucket.name}/{dataset} ..."
+    #     )
+    #     for fname in self.data_url[dataset]:
+    #         df = pd.read_parquet(os.path.join(self.data_path, fname))
+    #         file_path_in_bucket = os.path.join(dataset, fname)
+    #         upload_to_gcs_bucket(
+    #             df=df,
+    #             bucket=bucket,
+    #             file_path_in_bucket=file_path_in_bucket,
+    #             file_type="parquet"
+    #         )
 
     @timing
     def upload(
