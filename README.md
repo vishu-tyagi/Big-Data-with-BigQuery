@@ -1,5 +1,29 @@
 # Big-Data-with-BigQuery
 
+## Introduction
+
+This is a docker-containerized ELT data pipeline to extract and load data in monthly batches into BigQuery Data Warehouse, where it is transformed and prepared for BI reporting.
+
+## Dataset
+
+The dataset comes from monthly [TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) for NYC Green and Yellow taxi trips spanning from 2019 - 2021. It consists of over 200 million records.
+
+## Tools & Technologies
+
+- Cloud - [**Google Cloud Platform**](https://cloud.google.com)
+- Infrastructure as Code - [**Terraform**](https://www.terraform.io)
+- Containerization - [**Docker**](https://www.docker.com), [**Docker Compose**](https://docs.docker.com/compose/)
+- Orchestration - [**Airflow**](https://airflow.apache.org)
+- Transformation - [**dbt**](https://www.getdbt.com)
+- Data Lake - [**Google Cloud Storage**](https://cloud.google.com/storage)
+- Data Warehouse - [**BigQuery**](https://cloud.google.com/bigquery)
+- Data Visualization - [**Tableau Desktop**](https://www.tableau.com/products/desktop)
+- Language - [**Python**](https://www.python.org)
+
+## Final Result
+
+The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries for cleaning and transformation steps are present in `Big-Data-with-BigQuery/dbt/models`
+
 ## Setup
 
 **WARNING**: You will be charged for all the infrastructure setup. You can avail 300$ in credit by creating a new account on Google Cloud Platform (GCP).
@@ -15,6 +39,7 @@
 
         ```
 - Terraform
+- Docker, Docker Compose installed
 
 ### Terraform
 
@@ -35,7 +60,6 @@ terraform init
 #### View the Terraform plan
 
 You will be asked to enter two values. For the GCP Project ID, enter `<your-gcp-project-id>`. For the GCS bucket, enter any name that is unqiue across GCS. A good idea is to concatenate desired name with your GCS Project ID to make it unique. We will refer to the entered bucket name as `<your-gcs-bucket-name>`.
-
 
 ```
 terraform plan
@@ -58,143 +82,36 @@ You should now see the above bucket and datasets in your GCS project.
 
 Once done, set the environment variables `GCP_PROJECT_ID`, `GCP_GCS_BUCKET` to `<your-gcp-project-id>`, `<your-gcs-bucket-name>` respectively.
 
-### Get Going
+### Get Going with Airflow
 
-#### Move into top-level directory
+#### Move into Airflow directory
 ```
-cd Big-Data-with-BigQuery
+cd Big-Data-with-BigQuery/airflow
+
+```
+
+#### Set Airflow user
+```
+echo -e "AIRFLOW_UID=$(id -u)" > .env
 
 ```
 
 #### Build the container
 ```
-make build
+docker-compose build
 
 ```
 
-#### Extract raw data and ingest into BigQuery
+#### Run the container
 ```
-make extract-load-bigquery bucket=bq_bucket schema=bq_dataset
-
-```
-
-Example usage
-```
-make extract-load-bigquery bucket=nyc_taxi_bucket schema=staging
-
-```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest it into BigQuery dataset `staging`.
-
-#### Extract raw data and ingest into Postgres
-
-Note: This will take very long. It's recommended to reduce files in `src/nyc-taxi/nyc_taxi/config.py` before ingesting into a postgres database.
-
-```
-make extract-load-postgres \
-    network=pg_network \
-    user=pg_user \
-    password=pg_password \
-    host=pg_host \
-    port=pg_port \
-    db=pg_db \
-    schema=pg_schema
+docker-compose up
 
 ```
 
-Example usage
-```
-make extract-load-postgres \
-    network=host \
-    user=root \
-    password=root \
-    host=127.0.0.1 \
-    port=5432 \
-    db=nyc_taxi \
-    schema=staging
+At this point, the Airflow Webserver UI should be available on `localhost:8080`. Don't forget to port-forward `8080` in case running on a VM. You can login with `user:airflow` and `password:airflow` and trigger the `pipeline` DAG.
 
-```
-will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on `host` network on port `5432` and ingest the tables into it.
+## Future work
 
-## Dashboard
-
-The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The cleaning steps and SQL queries are present in `Big-Data-with-BigQuery/src/dbt/models`
-
-## Instructions for local development
-
-#### Move into top-level directory
-```
-cd Big-Data-with-BigQuery
-
-```
-
-#### Install environment
-```
-conda env create -f environment.yml
-
-```
-
-#### Activate environment
-```
-conda activate nyc-taxi
-
-```
-
-#### Install package
-```
-pip install -e src/nyc-taxi
-
-```
-
-Including the optional -e flag will install the package in "editable" mode, meaning that instead of copying the files into your virtual environment, a symlink will be created to the files where they are.
-
-#### Extract raw data and ingest into BigQuery
-```
-python -m nyc_taxi extract-load-bigquery \
-    --bucket=bq_bucket \
-    --schema=bq_dataset
-
-```
-
-Requires environment variable `GOOGLE_APPLICATION_CREDENTIALS`.
-
-Example usage
-```
-python -m nyc_taxi extract-load-bigquery \
-    --bucket=nyc_taxi_bucket \
-    --schema=staging
-
-```
-will first dump raw data into google cloud bucket `nyc_taxi_bucket`, then it will read the raw data from this bucket and ingest it into BigQuery dataset `staging`.
-
-#### Extract raw data and ingest into Postgres
-```
-python -m nyc_taxi extract-load-postgres \
-    --user=pg_user \
-    --password=pg_password \
-    --host=pg_host \
-    --port=pg_port \
-    --db=pg_db \
-    --schema=pd_schema
-
-```
-
-Example usage
-```
-python -m nyc_taxi extract-load-postgres \
-    --user=root \
-    --password=root \
-    --host=127.0.0.1 \
-    --port=5432 \
-    --db=nyc_taxi \
-    --schema=staging
-
-```
-will extract raw data and, create (if it does not exist) the schema `staging` in the Postgres database `nyc_taxi` running on host network on port `5432` and ingest the tables into it.
-
-#### Run jupyter server
-```
-jupyter notebook notebooks/
-
-```
-
-You can now use the jupyter kernel to run notebooks.
+- Build facts table incrementally instead of full refresh
+- Write data quality tests
+- Include CI/CD
