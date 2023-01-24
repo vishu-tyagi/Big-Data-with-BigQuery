@@ -1,1 +1,1 @@
-from .core import PostgresPipeline, BigQueryPipeline
+from .core import BigQueryPipeline

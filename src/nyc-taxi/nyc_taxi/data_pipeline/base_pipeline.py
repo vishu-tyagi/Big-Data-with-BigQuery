@@ -26,6 +26,7 @@ class DataPipeline():
         for dir in dirs:
             dir.mkdir(parents=True, exist_ok=True)
 
+    @timing
     def download_data(self, dataset):
         url = os.path.join(self.config.URL_PREFIX, dataset)
         target_path = Path(os.path.join(self.data_path, dataset))

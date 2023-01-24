@@ -12,3 +12,5 @@ SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-x", "-c"]
 WORKDIR $AIRFLOW_HOME
 
 USER $AIRFLOW_UID
+
+RUN pip install gcsfs
