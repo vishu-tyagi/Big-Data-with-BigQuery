@@ -104,6 +104,9 @@ docker-compose up
 
 At this point, the Airflow Webserver UI should be available on `localhost:8080`. Don't forget to port-forward `8080` in case running on a VM. You can login with `user:airflow` and `password:airflow` and trigger the `pipeline` DAG.
 
+![UI](images/dag.png)
+
+
 ## Future work
 
 - Add more data quality tests in dbt
