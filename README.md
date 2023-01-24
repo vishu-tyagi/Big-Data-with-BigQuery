@@ -1,4 +1,4 @@
-# Big-Data-with-BigQuery
+# BigQuery-ELT
 
 ## Introduction
 
@@ -22,7 +22,7 @@ The dataset comes from monthly [TLC Trip Record Data](https://www.nyc.gov/site/t
 
 ## Final Result
 
-The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries for cleaning and transformation steps are present in `Big-Data-with-BigQuery/dbt/models`
+The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries for cleaning and transformation steps are present in `BigQuery-ELT/dbt/models`
 
 ## Setup
 
@@ -47,7 +47,7 @@ The following steps will help you spin up the required infrastructure, which inc
 
 #### Move into terraform folder
 ```
-cd Big-Data-with-BigQuery/terraform
+cd BigQuery-ELT/terraform
 
 ```
 
@@ -86,7 +86,7 @@ Once done, set the environment variables `GCP_PROJECT_ID`, `GCP_GCS_BUCKET` to `
 
 #### Move into Airflow directory
 ```
-cd Big-Data-with-BigQuery/airflow
+cd BigQuery-ELT/airflow
 
 ```
 
