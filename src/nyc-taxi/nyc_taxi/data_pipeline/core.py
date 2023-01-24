@@ -38,16 +38,13 @@ class BigQueryPipeline(DataPipeline):
         project_id: str,
         bq_schema: str
     ):
-        external_table = dataset.split(".")[0]
+        external_table = "_".join(dataset.split("_")[:2])
         logger.info(f"Ingesting table {bq_schema}.{external_table} ...")
-        logger.info(f"project_id:{project_id}")
-        logger.info(f"bq_schema:{bq_schema}")
-        logger.info(f"external_table:{external_table}")
         df = pd.read_parquet(f"gs://{bucket.name}/{dataset}")
         df.to_gbq(
             project_id=project_id,
             destination_table=f"{bq_schema}.{external_table}",
-            if_exists="replace",
+            if_exists="append",
             chunksize=10000
         )
         logger.info(f"Finished ingesting {dataset} with {df.shape[0]} rows")

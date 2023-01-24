@@ -1,5 +1,4 @@
 {{ config(materialized='table')  }}
-{{ config(schema='dashboard')  }}
 
 
 with green_trips as (
