@@ -109,7 +109,7 @@ At this point, the Airflow Webserver UI should be available on `localhost:8080`.
 
 ![GRAPH](notebooks/images/graph.png)
 
-![RUN](notebooks/images/rub.png)
+![RUN](notebooks/images/run.png)
 
 ## Future work
 
