@@ -19,7 +19,7 @@ x-airflow-common:
     GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS
     GCP_PROJECT_ID: ${GCP_PROJECT_ID}
     GCP_GCS_BUCKET: ${GCP_GCS_BUCKET}
-    BIGQUERY_DATASET: staging
+    BIGQUERY_DATASET: ${BIGQUERY_DATASET:-staging}
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
 
   volumes:
@@ -27,6 +27,7 @@ x-airflow-common:
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ../src/nyc-taxi/nyc_taxi:/opt/airflow/dags/nyc_taxi
+    - ../dbt:/opt/airflow/dbt
     - ${GOOGLE_APPLICATION_CREDENTIALS}:${GOOGLE_APPLICATION_CREDENTIALS}:ro
 
   user: "${AIRFLOW_UID:-50000}:0"
