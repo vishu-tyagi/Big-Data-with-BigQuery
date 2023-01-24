@@ -12,10 +12,10 @@
 data/
 logs/
 airflow/*
-src/dbt/logs
-src/dbt/target/
-src/dbt/dbt_modules/
-src/dbt/dbt_packages/
+dbt/logs
+dbt/target/
+dbt/dbt_modules/
+dbt/dbt_packages/
 
 !airflow/dags
 !airflow/docker-compose.yaml
