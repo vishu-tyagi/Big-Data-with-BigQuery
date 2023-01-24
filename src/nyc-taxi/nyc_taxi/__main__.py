@@ -2,7 +2,7 @@ import sys
 import logging
 import argparse
 
-from nyc_taxi.api import extract_load_postgres, extract_load_bigquery
+from nyc_taxi.api import download_data, upload_to_gcs, create_bigquery_table
 
 FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=FORMAT, level=logging.INFO)
@@ -10,40 +10,18 @@ logging.basicConfig(format=FORMAT, level=logging.INFO)
 
 def main(args):
     try:
-        schema = args.schema
-        if sys.argv[1] == "extract-load-postgres":
-            try:
-                user = args.user
-                password = args.password
-                host = args.host
-                port = args.port
-                db = args.db
-            except AttributeError:
-                raise AttributeError(
-                    "Required username, password, host, port, database," + \
-                    " and schema name to establish postgres connection"
-                )
-            connection_string = \
-                f"postgresql://{user}:{password}@{host}:{port}/{db}"
-            extract_load_postgres(
-                connection_string=connection_string,
-                schema=schema
-            )
-        elif sys.argv[1] == "extract-load-bigquery":
-            try:
-                bucket_name = args.bucket
-            except AttributeError:
-                raise AttributeError(
-                    "Required bucket name for bigquery"
-                )
-            extract_load_bigquery(
-                bucket_name=bucket_name,
-                schema=schema
-            )
+        taxi = args.taxi
+        year = int(args.year)
+        month = int(args.month)
+        dataset = f"{taxi}_tripdata_{year}-{month:02d}.parquet"
+        if sys.argv[1] == "extract-load":
+            download_data(dataset=dataset)
+            upload_to_gcs(dataset=dataset)
+            create_bigquery_table(dataset=dataset)
     except IndexError:
         raise IndexError("Call to API requires an endpoint")
     except AttributeError:
-        raise AttributeError("Required schema name")
+        raise AttributeError("Required taxi color, year and month of dataset")
     return
 
 
@@ -52,39 +30,19 @@ if __name__ == "__main__":
         description="Data Ingestion Pipeline"
     )
     parser.add_argument(
-        "--user",
+        "--taxi",
         default=argparse.SUPPRESS,
-        help="username for postgres"
+        help="Dataset taxi color"
     )
     parser.add_argument(
-        "--password",
+        "--year",
         default=argparse.SUPPRESS,
-        help="password for postgres"
+        help="Dataset year"
     )
     parser.add_argument(
-        "--host",
+        "--month",
         default=argparse.SUPPRESS,
-        help="host for postgres"
-    )
-    parser.add_argument(
-        "--port",
-        default=argparse.SUPPRESS,
-        help="port for postgres"
-    )
-    parser.add_argument(
-        "--db",
-        default=argparse.SUPPRESS,
-        help="database name for postgres"
-    )
-    parser.add_argument(
-        "--schema",
-        default=argparse.SUPPRESS,
-        help="name of schema the table will be saved to"
-    )
-    parser.add_argument(
-        "--bucket",
-        default=argparse.SUPPRESS,
-        help="name of data lake bucket"
+        help="Dataset month"
     )
     args = parser.parse_args(sys.argv[2:])
     main(args)

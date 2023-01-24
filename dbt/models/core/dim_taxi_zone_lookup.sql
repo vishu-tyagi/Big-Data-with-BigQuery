@@ -1,4 +1,5 @@
 {{ config(materialized='view') }}
+{{ config(schema='staging')  }}
 
 
 select

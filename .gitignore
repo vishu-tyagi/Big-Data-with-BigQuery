@@ -1,4 +1,3 @@
-.env/
 .DS_Store
 *.egg-info
 .coverage
@@ -9,10 +8,16 @@
 **/*.lock.hcl
 **/*.terraform
 **/*.backup
+**/*.env
 data/
-
 logs/
-src/dbt/logs
-src/dbt/target/
-src/dbt/dbt_modules/
-src/dbt/dbt_packages/
+airflow/*
+dbt/logs
+dbt/target/
+dbt/dbt_modules/
+dbt/dbt_packages/
+dbt/.user.yml
+
+!airflow/dags
+!airflow/docker-compose.yaml
+!airflow/Dockerfile
