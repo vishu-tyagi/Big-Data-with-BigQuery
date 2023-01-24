@@ -39,7 +39,7 @@ The dashboard is now live and can be accessed on [Tableau Public](https://public
 
         ```
 - Terraform
-- Docker, Docker Compose installed
+- Docker, Docker Compose
 
 ### Terraform
 
@@ -93,12 +93,6 @@ cd Big-Data-with-BigQuery/airflow
 #### Set Airflow user
 ```
 echo -e "AIRFLOW_UID=$(id -u)" > .env
-
-```
-
-#### Build the container
-```
-docker-compose build
 
 ```
 
