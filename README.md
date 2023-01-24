@@ -106,6 +106,5 @@ At this point, the Airflow Webserver UI should be available on `localhost:8080`.
 
 ## Future work
 
-- Build facts table incrementally instead of full refresh
 - Add more data quality tests in dbt
 - Include CI/CD
