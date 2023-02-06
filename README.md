@@ -20,6 +20,10 @@ The dataset comes from monthly [TLC Trip Record Data](https://www.nyc.gov/site/t
 - Data Visualization - [**Tableau Desktop**](https://www.tableau.com/products/desktop)
 - Language - [**Python**](https://www.python.org)
 
+## Architecture
+
+![FLOW](notebooks/images/bq.png)
+
 ## Final Result
 
 The dashboard is now live and can be accessed on [Tableau Public](https://public.tableau.com/views/NYCTaxiDashboard_16740928210530/Dashboard?:language=en-US&:display_count=n&:origin=viz_share_link). The SQL queries for cleaning and transformation steps are present in `BigQuery-ELT/dbt/models`
@@ -98,7 +102,7 @@ echo -e "AIRFLOW_UID=$(id -u)" > .env
 
 #### Run the container
 ```
-docker-compose up
+docker compose up
 
 ```
 
@@ -110,6 +114,18 @@ At this point, the Airflow Webserver UI should be available on `localhost:8080`.
 ![GRAPH](notebooks/images/graph.png)
 
 ![RUN](notebooks/images/run.png)
+
+#### Stop and remove containers
+```
+docker compose down
+
+```
+
+#### Destroy Infrastructure
+```
+cd ../terraform/ && terraform destroy
+
+```
 
 ## Future work
 
