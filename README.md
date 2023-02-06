@@ -13,12 +13,17 @@ The dataset comes from monthly [TLC Trip Record Data](https://www.nyc.gov/site/t
 - Cloud - [**Google Cloud Platform**](https://cloud.google.com)
 - Infrastructure as Code - [**Terraform**](https://www.terraform.io)
 - Containerization - [**Docker**](https://www.docker.com), [**Docker Compose**](https://docs.docker.com/compose/)
-- Orchestration - [**Airflow**](https://airflow.apache.org)
+- Batch Processing - [**Apache Spark**](https://spark.apache.org)
 - Transformation - [**dbt**](https://www.getdbt.com)
+- Orchestration - [**Airflow**](https://airflow.apache.org)
 - Data Lake - [**Google Cloud Storage**](https://cloud.google.com/storage)
 - Data Warehouse - [**BigQuery**](https://cloud.google.com/bigquery)
 - Data Visualization - [**Tableau Desktop**](https://www.tableau.com/products/desktop)
 - Language - [**Python**](https://www.python.org)
+
+## Architecture
+
+![FLOW](notebooks/images/bq.png)
 
 ## Final Result
 
@@ -98,7 +103,7 @@ echo -e "AIRFLOW_UID=$(id -u)" > .env
 
 #### Run the container
 ```
-docker-compose up
+docker compose up
 
 ```
 
@@ -110,6 +115,18 @@ At this point, the Airflow Webserver UI should be available on `localhost:8080`.
 ![GRAPH](notebooks/images/graph.png)
 
 ![RUN](notebooks/images/run.png)
+
+#### Stop and remove containers
+```
+docker compose down
+
+```
+
+#### Destroy Infrastructure
+```
+cd ../terraform/ && terraform destroy
+
+```
 
 ## Future work
 
